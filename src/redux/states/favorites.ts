@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { LocalStorageTypes, Person } from "../../models";
+import { createSlice, current } from "@reduxjs/toolkit";
+import { Person } from "../../models";
+import { LocalStorageTypes } from "../../enums/index";
 import { getLocalStorage, setLocalStorage } from "../../utils";
 
 const initialState: Person[] = [];
@@ -10,8 +11,8 @@ export const favoritesSlice = createSlice({
     ? JSON.parse(getLocalStorage(LocalStorageTypes.FAVORITES) as string)
     : initialState,
   reducers: {
-    addFavorite: (state, action) => {
-      setLocalStorage(LocalStorageTypes.FAVORITES, state);
+    addFavorite: (_, action) => {
+      setLocalStorage(LocalStorageTypes.FAVORITES, action.payload);
       return action.payload;
     },
   },

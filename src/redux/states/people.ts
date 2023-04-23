@@ -1,17 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { LocalStorageTypes, Person } from "../../models";
-import { getLocalStorage, setLocalStorage } from "../../utils";
+import { Person } from "../../models";
+import { LocalStorageTypes } from "../../enums";
+import { setLocalStorage } from "../../utils";
 
 const initialState: Person[] = [];
 
 export const peopleSlice = createSlice({
   name: LocalStorageTypes.PEOPLE,
-  initialState: getLocalStorage(LocalStorageTypes.PEOPLE)
-    ? JSON.parse(getLocalStorage(LocalStorageTypes.PEOPLE) as string)
-    : initialState,
+  initialState,
   reducers: {
-    addPeople: (state, action) => {
-      setLocalStorage(LocalStorageTypes.PEOPLE, state);
+    addPeople: (_, action) => {
+      setLocalStorage(LocalStorageTypes.PEOPLE, action.payload);
       return action.payload;
     },
   },

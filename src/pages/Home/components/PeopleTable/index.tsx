@@ -14,30 +14,27 @@ export const PeopleTable: React.FC<PeopleTableInterface> = () => {
   const dispatch = useDispatch();
 
   const statePeople = useSelector((store: AppStore) => store.people);
-
-  const [selectedPeople, setSelectedPeople] = useState<Person[]>([]);
+  const stateFavourites = useSelector((store: AppStore) => store.favorites);
 
   const findPerson = useCallback(
-    (person: Person) => !!selectedPeople.find((p) => p.id === person.id),
-    [selectedPeople]
+    (person: Person) => !!stateFavourites.find((p) => p.id === person.id),
+    [stateFavourites]
   );
 
   const filterPerson = useCallback(
-    (person: Person) => selectedPeople.filter((p) => p.id !== person.id),
-    [selectedPeople]
+    (person: Person) => stateFavourites.filter((p) => p.id !== person.id),
+    [stateFavourites]
   );
 
   const handleChange = useCallback(
     (person: Person) => {
       const filteredPeople = findPerson(person)
         ? filterPerson(person)
-        : [...selectedPeople, person];
+        : [...stateFavourites, person];
+
       dispatch(addFavorite(filteredPeople));
-      setSelectedPeople(
-        findPerson(person) ? filterPerson(person) : [...selectedPeople, person]
-      );
     },
-    [selectedPeople]
+    [stateFavourites]
   );
 
   const columns: GridColDef[] = [
